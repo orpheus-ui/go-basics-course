@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 )
@@ -11,37 +12,62 @@ import (
 
 func main() {
 
-	revenue := getUserInput("Revenue: ")
-	expenses := getUserInput("Expenses: ")
-	taxRate := getUserInput("Tax Rate (default is 2.5): ")
+	revenue, err := getUserInput("Revenue: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	expenses, err := getUserInput("Expenses: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	taxRate, err := getUserInput("Tax Rate (default is 2.5): ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	earningBeforeTax, earningAfterTax, earningRatio := profitCalculator(revenue, expenses, taxRate)
+
+	formattedRatio := fmt.Sprintf(`Ratio: %.2f`, earningRatio)
+
+	fmt.Print("Earning Before Tax: ", earningBeforeTax, " | ", "Profit: ", earningAfterTax, " | ", formattedRatio)
 
 	writeToFile(earningBeforeTax, "ebt.txt")
 	writeToFile(earningAfterTax, "profit.txt")
 	writeToFile(earningRatio, "ratio.txt")
 
-	formattedRatio := fmt.Sprintf(`Ratio: %.2f`, earningRatio)
-
-	fmt.Print("Earning Before Tax: ", earningBeforeTax, " | ", "Profit: ", earningAfterTax, " | ", formattedRatio)
 	fmt.Println("New values added to respective files.")
 }
 
-func getUserInput(title string) float64 {
+func getUserInput(title string) (float64, error) {
 	var userInput float64
-	for {
-		fmt.Print(title)
-		fmt.Scan(&userInput)
-		if userInput <= 0 {
-			fmt.Println("Error: Value should be above 0!")
-			continue
-		} else {
-			break
-		}
+	fmt.Print(title)
+	fmt.Scan(&userInput)
+	if userInput <= 0 {
+		return 0, errors.New("value most be positive number")
 	}
-
-	return userInput
+	return userInput, nil
 }
+
+// Tutor wants to teach "errors" package but I found below function much simpler and works better in this case
+// since it loops and ask the value until it's right
+
+// func getUserInputWithError(title string) float64 {
+// 	var userInput float64
+// 	for {
+// 		fmt.Print(title)
+// 		fmt.Scan(&userInput)
+// 		if userInput <= 0 {
+// 			println("Error: Value should be positive!")
+// 			continue
+// 		} else {
+// 			break
+// 		}
+// 	}
+// 	return userInput
+// }
 
 func profitCalculator(revenue float64, expenses float64, taxRate float64) (float64, float64, float64) {
 	ebt := revenue - expenses
