@@ -1,0 +1,3 @@
+Earning before Task: 1200
+Profit: 960
+Ratio: 1.25

@@ -34,11 +34,8 @@ func main() {
 
 	fmt.Print("Earning Before Tax: ", earningBeforeTax, " | ", "Profit: ", earningAfterTax, " | ", formattedRatio)
 
-	writeToFile(earningBeforeTax, "ebt.txt")
-	writeToFile(earningAfterTax, "profit.txt")
-	writeToFile(earningRatio, "ratio.txt")
+	writeToFile(earningBeforeTax, earningAfterTax, earningRatio)
 
-	fmt.Println("New values added to respective files.")
 }
 
 func getUserInput(title string) (float64, error) {
@@ -75,7 +72,8 @@ func profitCalculator(revenue float64, expenses float64, taxRate float64) (float
 	er := ebt / eat
 	return ebt, eat, er
 }
-func writeToFile(i float64, str string) {
-	value := fmt.Sprint(i)
-	os.WriteFile(str, []byte(value), 0644)
+
+func writeToFile(ebt, profit, ratio float64) {
+	data := fmt.Sprintf("Earning before Task: %v\nProfit: %v\nRatio: %v", ebt, profit, ratio)
+	os.WriteFile("data.txt", []byte(data), 0644)
 }
