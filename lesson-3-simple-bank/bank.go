@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	fo "example.com/bank/fileops"
+	rndm "github.com/Pallinder/go-randomdata"
 )
 
 const accountBalanceFile = "balance.txt"
@@ -17,6 +18,7 @@ func main() {
 		fmt.Println("------------")
 		panic("Can't continue, Sorry!")
 	}
+	fmt.Println("Hey", rndm.SillyName(), "!")
 	fmt.Println("Welcome to Go Bank!")
 
 	for {
