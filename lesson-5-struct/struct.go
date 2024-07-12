@@ -19,12 +19,13 @@ func (u user) outputUserDetails() {
 }
 
 // To create method to change struct value we MUST use pointer.
-func (u *user) clearUserName() {
-	u.firstName = ""
-	u.lastName = ""
-}
+// func (u *user) clearUserName() {
+// 	u.firstName = ""
+// 	u.lastName = ""
+// }
 
 func newUser(firstName, lastName, birthDate string) (*user, error) {
+	// handling empty inputs
 	if firstName == "" || lastName == "" || birthDate == "" {
 		return nil, errors.New("all inputs are required")
 	}
@@ -48,8 +49,6 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-
-	// ... Do something with that gathered data!
 
 	appUser.outputUserDetails()
 
