@@ -7,11 +7,32 @@ import (
 	"strings"
 
 	"example.com/note/note"
+	"example.com/note/todo"
 )
+
+// "er" common convension for interface
+type saver interface {
+	Save() error
+}
+
+// type displayer interface {
+// 	Display()
+// }
+
+type outputtable interface {
+	saver
+	Display()
+}
+
+// type outputtable interface{
+// 	Save() error
+// 	Display()
+// }
 
 func main() {
 
 	title, body := getNoteData()
+	todoText := getUserInput("Todo text:")
 
 	userNote, err := note.New(title, body)
 	if err != nil {
@@ -19,14 +40,38 @@ func main() {
 		return
 	}
 
-	userNote.Display()
-	err = userNote.Save()
-
+	todo, err := todo.New(todoText)
 	if err != nil {
-		fmt.Print("Saving the note failed.")
+		fmt.Println(err)
 		return
 	}
 
+	// Note Display, Save
+	err = outputData(userNote)
+	if err != nil {
+		return
+	}
+
+	// Todo Display, Save
+	err = outputData(todo)
+	if err != nil {
+		return
+	}
+}
+
+func outputData(data outputtable) error {
+	data.Display()
+	return saveData(data)
+}
+
+func saveData(data saver) error {
+	err := data.Save()
+
+	if err != nil {
+		fmt.Print("Saving the note failed.")
+		return err
+	}
+	return nil
 }
 
 func getNoteData() (string, string) {
