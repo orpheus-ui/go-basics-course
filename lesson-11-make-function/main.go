@@ -4,8 +4,8 @@ import "fmt"
 
 type floatMap map[string]float64 // create a new type for a map of strings and floats
 
-func (m floatMap) print() {
-	for key, value := range m {
+func (fm floatMap) print() {
+	for key, value := range fm {
 		fmt.Println(key, value)
 	}
 }
