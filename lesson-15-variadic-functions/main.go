@@ -1,15 +1,17 @@
 package main
 
+import "fmt"
+
 func main() {
 
 	numbers := []int{1, 10, 15}
 	sum := sumup(numbers)
-	println(sum)
+	fmt.Println(sum)
 
 	// * variadic functions
-	println(sumupVariadic(2, 4, 18))
+	fmt.Println(sumupVariadic(2, 4, 18))
 	// * passing a slice to a variadic function
-	println(sumupVariadic(numbers...))
+	fmt.Println(sumupVariadic(numbers...))
 
 }
 
