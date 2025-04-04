@@ -7,10 +7,22 @@ type transformFn func(int) int // create a new type for a function that takes an
 func main() {
 
 	numbers := []int{1, 2, 3, 4}
+	moreNumbers := []int{5, 1, 2}
 	doubled := transformNumbers(&numbers, double)
 	tripled := transformNumbers(&numbers, triple)
 	fmt.Println(doubled)
 	fmt.Println(tripled)
+
+	// get the function as a value
+	transformFn1 := getTransformFn(&numbers)
+	transformFn2 := getTransformFn(&moreNumbers)
+
+	// use the function as a value
+	transformedMoreNumbers := transformNumbers(&moreNumbers, transformFn2)
+	transformNumbers := transformNumbers(&numbers, transformFn1)
+
+	fmt.Println(transformNumbers)
+	fmt.Println(transformedMoreNumbers)
 
 }
 
@@ -21,6 +33,15 @@ func transformNumbers(n *[]int, transform transformFn) []int {
 		dNumbers = append(dNumbers, transform(val))
 	}
 	return dNumbers
+}
+
+// utility function to return a function as a value
+func getTransformFn(number *[]int) transformFn {
+	if (*number)[0] == 1 {
+		return double
+	} else {
+		return triple
+	}
 }
 
 // utility function to double the numbers
